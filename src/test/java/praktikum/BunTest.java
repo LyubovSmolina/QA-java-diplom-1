@@ -2,10 +2,8 @@ package praktikum;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class BunTest {
     private final String nameBunTest = "Test";
     private final float priceBunTest = 15.0001F;
