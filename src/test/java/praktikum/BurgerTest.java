@@ -1,4 +1,5 @@
 package praktikum;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -109,6 +110,39 @@ public class BurgerTest {
         assertEquals("Неверный расчет стоимости бургера", expectedPrice, actualPrice, 0);
 
         System.out.println("Ожидаемая стоимость бургера: "+ expectedPrice + " руб., фактическая стоимость: " + actualPrice + " руб.");
+    }
+    //Тест метода формирования чека. Используем мокито и явно указываем аргументы ингридиентов бургера
+    @Test
+    public void getReceipt() {
+        burger.setBuns(mockBun);
+        Mockito.when(mockBun.getPrice()).thenReturn(20.0f);
+        Mockito.when(mockBun.getName()).thenReturn("CosmoBurger");
+
+        burger.addIngredient(mockCutlet);
+        Mockito.when(mockCutlet.getName()).thenReturn("steak");
+        Mockito.when(mockCutlet.getType()).thenReturn(IngredientType.FILLING);
+        Mockito.when(mockCutlet.getPrice()).thenReturn(50.0f);
+
+        burger.addIngredient(mockSauce);
+        Mockito.when(mockSauce.getName()).thenReturn("chili");
+        Mockito.when(mockSauce.getType()).thenReturn(IngredientType.SAUCE);
+        Mockito.when(mockSauce.getPrice()).thenReturn(10.0f);
+
+        String expectedReceipt = String.format("(==== %s ====)%n" +
+                        "= %s %s =%n" +
+                        "= %s %s =%n" +
+                        "(==== %s ====)%n" +
+                        "%nPrice: %f%n",
+                mockBun.getName(),
+                mockCutlet.getType().toString().toLowerCase(), mockCutlet.getName(),
+                mockSauce.getType().toString().toLowerCase(), mockSauce.getName(),
+                mockBun.getName(),
+                burger.getPrice());
+
+        String actualReceipt = burger.getReceipt();
+
+        Assert.assertEquals("Некорректный формат чека", expectedReceipt, actualReceipt);
+        System.out.println("Ожидаемый формат чека: \n " + expectedReceipt + "\n Фактический формат чека: \n " + actualReceipt);
     }
 
 }
